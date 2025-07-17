@@ -6,7 +6,7 @@ from langchain_text_splitters import (
 )
 from langchain_core.documents import Document
 from typing import Union
-from _core import OutputType
+from . import OutputType
 
 
 def tiktoken_character_text_splitter(

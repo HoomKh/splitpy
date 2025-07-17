@@ -2,7 +2,7 @@ from langchain_core.documents import Document
 from typing import Callable, Union
 import yaml
 from pathlib import Path
-from _core import (
+from . import (
     OutputType, 
     SplitterType, 
     character_text_splitter,

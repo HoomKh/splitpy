@@ -2,7 +2,7 @@
 from langchain_text_splitters import CharacterTextSplitter
 from langchain_core.documents import Document
 from typing import Union
-from _core import OutputType
+from . import OutputType
 
 
 def character_text_splitter(

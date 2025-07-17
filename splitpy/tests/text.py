@@ -3,7 +3,7 @@ from pathlib import Path
 import sys
 project_root = Path(__file__).resolve().parent.parent
 sys.path.append(str(project_root))
-from _core import split_text, SplitterType, OutputType
+from . import split_text, SplitterType, OutputType
 
 file_path = "C:/Users/Hooman/Desktop/splitpy/tests/nke-10k-2023.pdf"
 loader = PyPDFLoader(file_path=file_path)

@@ -1,7 +1,7 @@
 from pathlib import Path
 from typing import Union, Callable
 from langchain_core.documents import Document
-from _core import (
+from . import (
     OutputType, 
     SplitterType,
     router_splitter_type,

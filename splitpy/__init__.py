@@ -68,4 +68,4 @@ This implementation follows concepts from LangChain’s official docs:
 
 """
 
-from _core import (SplitterType, OutputType, split_text)
+from ._core import (SplitterType, OutputType, split_text)
