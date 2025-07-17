@@ -1,0 +1,149 @@
+from langchain_core.documents import Document
+from typing import Callable, Union, Literal
+import yaml
+from pathlib import Path
+from .character_splitters import (
+    character_text_splitter,
+    recursive_character_text_splitter,
+)
+from .token_splitters import (
+    tiktoken_character_text_splitter,
+    tiktoken_recursive_character_text_splitter,
+    tiktoken_token_text_splitter,
+)
+
+
+def router_splitter_type(
+    input_data: Union[str, Path, list[str], list[Document]],
+    output_type: Literal["document", "string"],
+    splitter_type: Literal[
+        "base_character",
+        "base_recursive",
+        "tiktoken_token",
+        "tiktoken_recursive",
+        "tiktoken_character",
+    ],
+    encoding: str,
+    # Parameters for Chunk
+    chunk_size: int,
+    chunk_overlap: int,
+    encoding_name: str,
+    length_function: Callable,
+    is_separator_regex: bool,
+    add_start_index: bool,
+    separator: list[str],
+) -> Union[list[Document], list[str]]:
+
+    # Load the input_data if it's .txt -> str
+    if isinstance(input_data, Path) or (
+        isinstance(input_data, str) and input_data.endswith(".txt")
+    ):
+        path = Path(input_data)
+        input_data = load_txt(path, encoding=encoding)
+
+    # Basic Charecter Text Splitter
+    if splitter_type == "base_character":
+        return character_text_splitter(
+            input_data=input_data,
+            output_type=output_type,
+            chunk_size=chunk_size,
+            chunk_overlap=chunk_overlap,
+            separator=separator,
+            length_function=length_function,
+            is_separator_regex=is_separator_regex,
+        )
+
+    # Recursive Character Text Splitter
+    elif splitter_type == "base_recursive":
+        return recursive_character_text_splitter(
+            input_data=input_data,
+            output_type=output_type,
+            chunk_size=chunk_size,
+            chunk_overlap=chunk_overlap,
+            separators=separator,
+            length_function=length_function,
+            is_separator_regex=is_separator_regex,
+            add_start_index=add_start_index,
+        )
+
+    # Tiktoken Token Text Splitter
+    elif splitter_type == "tiktoken_token":
+        return tiktoken_token_text_splitter(
+            input_data=input_data,
+            output_type=output_type,
+            encoding_name=encoding_name,
+            chunk_size=chunk_size,
+            chunk_overlap=chunk_overlap,
+        )
+
+    # Tiktoken Character Text Splitter
+    elif splitter_type == "tiktoken_character":
+        return tiktoken_character_text_splitter(
+            input_data=input_data,
+            output_type=output_type,
+            encoding_name=encoding_name,
+            chunk_size=chunk_size,
+            chunk_overlap=chunk_overlap,
+        )
+
+    # Tiktoken Recursive Text Splitter
+    elif splitter_type == "tiktoken_recursive":
+        return tiktoken_recursive_character_text_splitter(
+            input_data=input_data,
+            output_type=output_type,
+            chunk_size=chunk_size,
+            chunk_overlap=chunk_overlap,
+            encoding_name=encoding_name,
+        )
+    else:
+        raise ValueError(
+            f"Splitter type '{splitter_type}' does not support path input directly"
+        )
+
+
+def normalize_to_documents(input_data) -> list[Document]:
+    if isinstance(input_data, str):
+        return [Document(page_content=input_data)]
+    elif isinstance(input_data, list) and all(isinstance(i, str) for i in input_data):
+        return [Document(page_content=i) for i in input_data]
+    elif isinstance(input_data, list) and all(
+        isinstance(i, Document) for i in input_data
+    ):
+        return input_data
+    else:
+        raise ValueError("Unsupported input type")
+
+
+def load_txt(path: str, encoding: str) -> str:
+    try:
+        with open(path, encoding=encoding) as f:
+            return f.read()
+    except Exception as e:
+        raise ValueError(f"error while reading file : {e}")
+
+
+def final_decision_output(
+    split_docs: list[Document], output_type: Literal["document", "string"]
+) -> Union[list[Document], list[str]]:
+
+    if output_type == "document":
+        return split_docs
+    elif output_type == "string":
+        return [s.page_content for s in split_docs]
+    else:
+        raise ValueError("output_type must be 'document' or 'string'")
+
+
+def load_config(path: str = "config.yml") -> dict:
+    try:
+        # config_path = Path(__file__).resolve().parent.parent / path
+        with open(path, "r", encoding="utf-8") as f:
+            return yaml.safe_load(f)
+    except Exception as e:
+        raise ValueError("error while loading config: {e}")
+
+
+def resolve_length_function(func_name: str) -> Callable:
+    if func_name == "len":
+        return len
+    raise ValueError(f"Unsupported length function: {func_name}")

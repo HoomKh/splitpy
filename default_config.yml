@@ -1,0 +1,22 @@
+input_data: null
+output_type: "document"
+splitter_type: "base_recursive"
+encoding: "utf-8"
+chunk_size: 1000
+chunk_overlap: 200
+encoding_name: "cl100k_base"
+length_function: "len"
+is_separator_regex: false
+add_start_index: false
+separator:
+  - "\n"
+  - "\n\n"
+  - " "
+  - "."
+  - ","
+  - "\u200b"
+  - "\uff0c"
+  - "\u3001"
+  - "\uff0e"
+  - "\u3002"
+  - ""
