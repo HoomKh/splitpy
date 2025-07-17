@@ -1,12 +1,12 @@
 from langchain_core.documents import Document
-from typing import Callable, Union, Literal
+from typing import Callable, Union
 import yaml
 from pathlib import Path
-from .character_splitters import (
+from _core import (
+    OutputType, 
+    SplitterType, 
     character_text_splitter,
     recursive_character_text_splitter,
-)
-from .token_splitters import (
     tiktoken_character_text_splitter,
     tiktoken_recursive_character_text_splitter,
     tiktoken_token_text_splitter,
@@ -15,14 +15,8 @@ from .token_splitters import (
 
 def router_splitter_type(
     input_data: Union[str, Path, list[str], list[Document]],
-    output_type: Literal["document", "string"],
-    splitter_type: Literal[
-        "base_character",
-        "base_recursive",
-        "tiktoken_token",
-        "tiktoken_recursive",
-        "tiktoken_character",
-    ],
+    output_type: OutputType,
+    splitter_type: SplitterType,
     encoding: str,
     # Parameters for Chunk
     chunk_size: int,
@@ -42,7 +36,7 @@ def router_splitter_type(
         input_data = load_txt(path, encoding=encoding)
 
     # Basic Charecter Text Splitter
-    if splitter_type == "base_character":
+    if splitter_type == SplitterType.BASE_CHARACTER:
         return character_text_splitter(
             input_data=input_data,
             output_type=output_type,
@@ -54,7 +48,7 @@ def router_splitter_type(
         )
 
     # Recursive Character Text Splitter
-    elif splitter_type == "base_recursive":
+    elif splitter_type == SplitterType.BASE_RECURSIVE:
         return recursive_character_text_splitter(
             input_data=input_data,
             output_type=output_type,
@@ -67,7 +61,7 @@ def router_splitter_type(
         )
 
     # Tiktoken Token Text Splitter
-    elif splitter_type == "tiktoken_token":
+    elif splitter_type == SplitterType.TIKTOKEN_TOKEN:
         return tiktoken_token_text_splitter(
             input_data=input_data,
             output_type=output_type,
@@ -77,7 +71,7 @@ def router_splitter_type(
         )
 
     # Tiktoken Character Text Splitter
-    elif splitter_type == "tiktoken_character":
+    elif splitter_type == SplitterType.TIKTOKEN_CHARACTER:
         return tiktoken_character_text_splitter(
             input_data=input_data,
             output_type=output_type,
@@ -87,7 +81,7 @@ def router_splitter_type(
         )
 
     # Tiktoken Recursive Text Splitter
-    elif splitter_type == "tiktoken_recursive":
+    elif splitter_type == SplitterType.TIKTOKEN_RECURSIVE:
         return tiktoken_recursive_character_text_splitter(
             input_data=input_data,
             output_type=output_type,
@@ -123,7 +117,7 @@ def load_txt(path: str, encoding: str) -> str:
 
 
 def final_decision_output(
-    split_docs: list[Document], output_type: Literal["document", "string"]
+    split_docs: list[Document], output_type: OutputType
 ) -> Union[list[Document], list[str]]:
 
     if output_type == "document":

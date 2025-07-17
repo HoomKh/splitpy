@@ -5,12 +5,13 @@ from langchain_text_splitters import (
     TokenTextSplitter,
 )
 from langchain_core.documents import Document
-from typing import Union, Literal
+from typing import Union
+from _core import OutputType
 
 
 def tiktoken_character_text_splitter(
     input_data: Union[str, list[Document], list[str]],
-    output_type: Literal["document", "string"],
+    output_type: OutputType,
     encoding_name: str,
     chunk_size: int,
     chunk_overlap: int,
@@ -34,7 +35,7 @@ def tiktoken_character_text_splitter(
 
 def tiktoken_recursive_character_text_splitter(
     input_data: Union[str, list[Document], list[str]],
-    output_type: Literal["document", "string"],
+    output_type: OutputType,
     encoding_name: str,
     chunk_size: int,
     chunk_overlap: int,
@@ -58,7 +59,7 @@ def tiktoken_recursive_character_text_splitter(
 
 def tiktoken_token_text_splitter(
     input_data: Union[str, list[Document], list[str]],
-    output_type: Literal["document", "string"],
+    output_type: OutputType,
     encoding_name: str,
     chunk_size: int,
     chunk_overlap: int,

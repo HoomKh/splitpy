@@ -1,17 +1,18 @@
 from pathlib import Path
-from typing import Union, Literal, Callable
+from typing import Union, Callable
 from langchain_core.documents import Document
-
-from .utils import (
+from _core import (
+    OutputType, 
+    SplitterType,
     router_splitter_type,
     load_config,
     resolve_length_function,
 )
 
 
-# Import default config from default_config.yml
+# Import default config from config.yml
 
-default_config = load_config(path="C:/Users/Hooman/Desktop/langchain-tutorials/tools/splitters/default_config.yml")
+default_config = load_config()
 if isinstance(default_config.get("length_function"), str):
     default_config["length_function"] = resolve_length_function(
         default_config["length_function"]
@@ -22,14 +23,8 @@ def split_text(
     input_data: Union[str, Path, list[str], list[Document]] = default_config[
         "input_data"
     ],
-    output_type: Literal["document", "string"] = default_config["output_type"],
-    splitter_type: Literal[
-        "base_character",
-        "base_recursive",
-        "tiktoken_token",
-        "tiktoken_recursive",
-        "tiktoken_character",
-    ] = default_config["splitter_type"],
+    output_type: OutputType = default_config["output_type"],
+    splitter_type: SplitterType = default_config["splitter_type"],
     # Encoding for loading .txt file
     encoding: str = default_config["encoding"],
     # Parameters for Chunk
