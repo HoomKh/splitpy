@@ -11,6 +11,6 @@ setup(
     author=author,
     author_email=author_email,
     packages=find_packages(),
-    install_requires=["langchain","langchain-community", "pypdf"],
+    install_requires=["langchain","langchain-community", "pypdf", "tiktoken"],
     python_requires=">=3.8",
 )
