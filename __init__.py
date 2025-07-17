@@ -1,4 +1,9 @@
-# 📚 LangChain Text Splitters Toolkit
+"""
+# SplitPy
+
+---
+
+## 📚 LangChain Text Splitters Toolkit 
 
 This module provides various document splitting strategies for preparing text to be processed by LLMs or NLP systems.
 
@@ -18,8 +23,8 @@ There are several practical reasons for splitting text into smaller, manageable 
 
 ## 🧠 Strategies included
 
-| Splitter                                     | Type      | Token-aware | Recursive | Description                         |
-| -------------------------------------------- | --------- | ----------- | --------- | ----------------------------------- |
+|Splitter                                    |Type      |Token-aware |Recursive |Description                         |
+|--------------------------------------------|---------|-----------|---------|-----------------------------------|
 | `character_text_splitter`                    | character | ❌           | ❌         | Basic fixed-size character chunks   |
 | `recursive_character_text_splitter`          | character | ❌           | ✅         | Smarter structure-aware chunking    |
 | `tiktoken_character_text_splitter`           | token     | ✅           | ❌         | Token-limited LLM-safe splitting    |
@@ -47,8 +52,8 @@ print(chunks[0].page_content)
 
 ## 🧪 When to use which?
 
-| Use Case                     | Recommended Splitter                         |
-| ---------------------------- | -------------------------------------------- |
+|Use Case                     |Recommended Splitter                         |
+|----------------------------|--------------------------------------------|
 | RAG + OpenAI                 | `tiktoken_recursive_character_text_splitter` |
 | Basic NLP preprocessing      | `character_text_splitter`                    |
 | Fast token slicing           | `tiktoken_token_text_splitter`               |
@@ -60,3 +65,7 @@ print(chunks[0].page_content)
 
 This implementation follows concepts from LangChain’s official docs:
 🔗 [LangChain Docs: Text Splitters](https://python.langchain.com/docs/concepts/text_splitters/)
+
+"""
+
+from _core import (SplitterType, OutputType, split_text)

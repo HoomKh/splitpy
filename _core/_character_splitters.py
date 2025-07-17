@@ -1,12 +1,13 @@
 # ----------------------- ( character-based ) -----------------------
 from langchain_text_splitters import CharacterTextSplitter
 from langchain_core.documents import Document
-from typing import Union, Literal
+from typing import Union
+from _core import OutputType
 
 
 def character_text_splitter(
     input_data: Union[str, list[Document], list[str]],
-    output_type: Literal["document", "string"],
+    output_type: OutputType,
     separator: list[str],
     chunk_size: int,
     chunk_overlap: int,
@@ -41,7 +42,7 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 def recursive_character_text_splitter(
     input_data: Union[str, list[Document], list[str]],
-    output_type: Literal["document", "string"],
+    output_type: OutputType,
     chunk_size: int,
     chunk_overlap: int,
     length_function,
