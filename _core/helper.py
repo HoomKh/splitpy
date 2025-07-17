@@ -130,8 +130,8 @@ def final_decision_output(
 
 def load_config(path: str = "config.yml") -> dict:
     try:
-        # config_path = Path(__file__).resolve().parent.parent / path
-        with open(path, "r", encoding="utf-8") as f:
+        config_path = Path(__file__).resolve().parent / path
+        with open(config_path, "r", encoding="utf-8") as f:
             return yaml.safe_load(f)
     except Exception as e:
         raise ValueError("error while loading config: {e}")

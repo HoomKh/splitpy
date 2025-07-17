@@ -19,7 +19,7 @@ from .helper import (
     router_splitter_type
 )
 
-from splitter import split_text
+from .splitter import split_text
 
 __all__ = [
     "character_text_splitter",
