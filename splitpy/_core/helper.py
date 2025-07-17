@@ -1,6 +1,5 @@
 from langchain_core.documents import Document
 from typing import Callable, Union
-import yaml
 from pathlib import Path
 from . import (
     OutputType, 
@@ -120,21 +119,40 @@ def final_decision_output(
     split_docs: list[Document], output_type: OutputType
 ) -> Union[list[Document], list[str]]:
 
-    if output_type == "document":
+    if output_type == OutputType.DOCUMENT:
         return split_docs
-    elif output_type == "string":
+    elif output_type == OutputType.STRING:
         return [s.page_content for s in split_docs]
     else:
         raise ValueError("output_type must be 'document' or 'string'")
 
 
-def load_config(path: str = "config.yml") -> dict:
-    try:
-        config_path = Path(__file__).resolve().parent / path
-        with open(config_path, "r", encoding="utf-8") as f:
-            return yaml.safe_load(f)
-    except Exception as e:
-        raise ValueError("error while loading config: {e}")
+def load_config() -> dict:
+    return {
+        "input_data": None,
+        "output_type":  OutputType.DOCUMENT,
+        "splitter_type": SplitterType.BASE_RECURSIVE,
+        "encoding": "utf-8",
+        "chunk_size": 1000,
+        "chunk_overlap": 200,
+        "encoding_name": "cl100k_base",
+        "length_function": "len",
+        "is_separator_regex": False,
+        "add_start_index": False,
+        "separator": [
+            "\n",
+            "\n\n",
+            " ",
+            ".",
+            ",",
+            "\u200b",
+            "\uff0c",
+            "\u3001",
+            "\uff0e",
+            "\u3002",
+            "",
+        ]
+    }
 
 
 def resolve_length_function(func_name: str) -> Callable:
