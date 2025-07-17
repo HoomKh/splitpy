@@ -1,0 +1,16 @@
+from setuptools import setup, find_packages
+from pathlib import Path
+from version import __version__
+from authority import author, author_email
+
+here = Path(__file__).resolve().parent.name
+
+setup(
+    name=here,
+    version=__version__,
+    author=author,
+    author_email=author_email,
+    packages=find_packages(),
+    install_requires=["langchain", "pyyaml"],
+    python_requires=">=3.8",
+)

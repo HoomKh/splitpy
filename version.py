@@ -1,4 +1,4 @@
-v0 = "V0 development"
+v_0_0_0 = "V 0.0.0"
 # v1 = "v1" # in the future
 
-__version__ = v0
+__version__ = v_0_0_0
